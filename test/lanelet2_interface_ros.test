@@ -1,0 +1,5 @@
+<launch>
+  <!-- use this like a normal launch file to set up your test environment. The test tag below is used to launch your unittest node-->
+
+  <test test-name="test_lanelet2_interface_ros" pkg="lanelet2_interface_ros" type="lanelet2_interface_ros-test" />
+</launch>
