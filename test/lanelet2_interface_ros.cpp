@@ -30,14 +30,16 @@
 //	  ASSERT_FLOAT_EQ((10.0f + 2.0f) * 3.0f, 10.0f * 3.0f + 2.0f * 3.0f)
 //}
 //=======================================================================================================================================================
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <ros/ros.h>
+
+#include "Lanelet.h"
 
 //A google test function (uncomment the next function, add code and 
 //change the names TestGroupName and TestName)
-//TEST(TestGroupName, TestName) {
-	//TODO: Add your test code here. You can use ros::NodeHandle and all other ros functionality here.
-//}
+TEST(lanelet2_interface_ros, lanelet) {
+
+}
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "unittest");
