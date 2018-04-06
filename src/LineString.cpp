@@ -2,7 +2,7 @@
 
 #include "internal/Attributes.h"
 #include "internal/Point.h"
-#include "../../cmake-build-release/devel/include/lanelet2_msgs_ros/LineString.h"
+#include "lanelet2_msgs_ros/LineString.h"
 
 namespace lanelet2_interface_ros {
 
