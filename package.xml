@@ -5,8 +5,8 @@
   <description>Interface between lanelet2 and ROS.</description>
 
   <license>contact-the-maintainer</license>
-  <maintainer email="wirges@fzi.de">Sascha Wirges</maintainer>
-  <author email="wirges@fzi.de">Sascha Wirges</author>
+  <maintainer email="maximilian.naumann@kit.edu">Maximilian Naumann</maintainer>
+
   <url type="repository">https://gitlab.mrt.uni-karlsruhe.de/lanelet2/lanelet2_interface_ros</url>
 
   <buildtool_depend>catkin</buildtool_depend>
@@ -21,8 +21,10 @@
   <depend>roslib</depend>
   <depend>nodelet</depend>
 
-  <depend>lanelet2</depend>
-  <depend>lanelet2_msgs_ros</depend>
+  <depend>lanelet2_core</depend>
+  <depend>lanelet2_io</depend>
+  <depend>lanelet2_projection</depend>
+  <test_depend>lanelet2_maps</test_depend>
 
   <export>
   </export>

@@ -1,47 +1,42 @@
-//google test docs
-//wiki page: https://code.google.com/p/googletest/w/list
-//primer: https://code.google.com/p/googletest/wiki/V1_7_Primer
-//FAQ: https://code.google.com/p/googletest/wiki/FAQ
-//advanced guide: https://code.google.com/p/googletest/wiki/V1_7_AdvancedGuide
-//samples: https://code.google.com/p/googletest/wiki/V1_7_Samples
-//
-//List of some basic tests fuctions:
-//Fatal assertion                      Nonfatal assertion                   Verifies / Description
-//-------------------------------------------------------------------------------------------------------------------------------------------------------
-//ASSERT_EQ(expected, actual);         EXPECT_EQ(expected, actual);         expected == actual
-//ASSERT_NE(val1, val2);               EXPECT_NE(val1, val2);               val1 != val2
-//ASSERT_LT(val1, val2);               EXPECT_LT(val1, val2);               val1 < val2
-//ASSERT_LE(val1, val2);               EXPECT_LE(val1, val2);               val1 <= val2
-//ASSERT_GT(val1, val2);               EXPECT_GT(val1, val2);               val1 > val2
-//ASSERT_GE(val1, val2);               EXPECT_GE(val1, val2);               val1 >= val2
-//
-//ASSERT_FLOAT_EQ(expected, actual);   EXPECT_FLOAT_EQ(expected, actual);   the two float values are almost equal (4 ULPs)
-//ASSERT_DOUBLE_EQ(expected, actual);  EXPECT_DOUBLE_EQ(expected, actual);  the two double values are almost equal (4 ULPs)
-//ASSERT_NEAR(val1, val2, abs_error);  EXPECT_NEAR(val1, val2, abs_error);  the difference between val1 and val2 doesn't exceed the given absolute error
-//
-//Note: more information about ULPs can be found here: http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
-//
-//Example of two unit test:
-//TEST(Math, Add) {
-//    ASSERT_EQ(10, 5+ 5);
-//}
-//
-//TEST(Math, Float) {
-//	  ASSERT_FLOAT_EQ((10.0f + 2.0f) * 3.0f, 10.0f * 3.0f + 2.0f * 3.0f)
-//}
-//=======================================================================================================================================================
 #include <gtest/gtest.h>
 #include <ros/ros.h>
 
-#include "Lanelet.h"
+#include "lanelet2_interface_ros.hpp"
 
-//A google test function (uncomment the next function, add code and 
-//change the names TestGroupName and TestName)
-TEST(lanelet2_interface_ros, lanelet) {
-
+TEST(lanelet2_interface_ros, throwOnTimeout) {
+    lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
+    ASSERT_THROW(ll2if.getMapPtr(), std::runtime_error);
+    ASSERT_THROW(ll2if.getFrameIdOrigin(), std::runtime_error);
 }
 
-int main(int argc, char **argv) {
+TEST(lanelet2_interface_ros, throwOnUninitializedUse) {
+    lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
+    ASSERT_THROW(ll2if.waitForInit(), std::runtime_error);
+}
+
+TEST(lanelet2_interface_ros, init) {
+    lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
+    ros::NodeHandle nh;
+    nh.setParam("/lanelet2_interface_ros/frame_id_origin", "map");
+    nh.setParam("/lanelet2_interface_ros/lat_origin", 49.);
+    nh.setParam("/lanelet2_interface_ros/lon_origin", 8.);
+    std::string exampleMapPath = std::string(PKG_DIR) + "/../lanelet2/lanelet2_maps/res/mapping_example.osm";
+    nh.setParam("/lanelet2_interface_ros/map_file_name", exampleMapPath);
+
+    ll2if.waitForInit();
+
+    // the interface is initialized
+    ASSERT_TRUE(ll2if.isInitialized());
+
+    // we can retreive the map
+    lanelet::LaneletMapConstPtr mapPtr = ll2if.getMapPtr();
+    ASSERT_TRUE(!!mapPtr);
+
+    // and the frame_id
+    ASSERT_STREQ(std::string("map").c_str(), ll2if.getFrameIdOrigin().c_str());
+}
+
+int main(int argc, char** argv) {
     ros::init(argc, argv, "unittest");
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
