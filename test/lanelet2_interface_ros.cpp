@@ -9,14 +9,10 @@ TEST(lanelet2_interface_ros, init) {
     lanelet::LaneletMapConstPtr mapPtr = ll2if.waitForMapPtr();
     ASSERT_TRUE(!!mapPtr);
 
-    lanelet::LaneletMapConstPtr mapWithOffsetPtr = ll2if.waitForMapWithOffsetPtr();
-    ASSERT_TRUE(!!mapWithOffsetPtr);
-
     lanelet::LaneletMapPtr nonConstMapPtr = ll2if.waitForNonConstMapPtr();
     ASSERT_TRUE(!!nonConstMapPtr);
 
     ASSERT_EQ(std::string("map"), ll2if.waitForFrameIdMap());
-    ASSERT_EQ(std::string("map_with_offset"), ll2if.waitForFrameIdMapWithOffset());
 }
 
 int main(int argc, char** argv) {

@@ -9,13 +9,9 @@ TEST(lanelet2_interface_ros, throwOnTimeout) {
 
     ASSERT_THROW(ll2if.waitForMapPtr(10, 5), lanelet2_interface_ros::InitializationError);
 
-    ASSERT_THROW(ll2if.waitForMapWithOffsetPtr(10, 5), lanelet2_interface_ros::InitializationError);
-
     ASSERT_THROW(ll2if.waitForNonConstMapPtr(10, 5), lanelet2_interface_ros::InitializationError);
 
     ASSERT_THROW(ll2if.waitForFrameIdMap(10, 5), lanelet2_interface_ros::InitializationError);
-
-    ASSERT_THROW(ll2if.waitForFrameIdMapWithOffset(10, 5), lanelet2_interface_ros::InitializationError);
 }
 
 
