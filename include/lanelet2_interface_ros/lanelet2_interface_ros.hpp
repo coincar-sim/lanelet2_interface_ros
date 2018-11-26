@@ -8,14 +8,26 @@ namespace lanelet2_interface_ros {
 class Lanelet2InterfaceRos {
 public:
     Lanelet2InterfaceRos();
-    bool isInitialized() const;
-    void waitForInit(double pollRateHz = 10, double timeOutSecs = 30);
-    std::string getFrameIdOrigin() const;
-    lanelet::LaneletMapConstPtr getMapPtr() const;
+    std::string waitForFrameIdMap(double pollRateHz = 10, double timeOutSecs = 30);
+    std::string waitForFrameIdMapWithOffset(double pollRateHz = 10, double timeOutSecs = 30);
+    lanelet::LaneletMapConstPtr waitForMapPtr(double pollRateHz = 10, double timeOutSecs = 30);
+    lanelet::LaneletMapConstPtr waitForMapWithOffsetPtr(double pollRateHz = 10, double timeOutSecs = 30);
+    lanelet::LaneletMapPtr waitForNonConstMapPtr(double pollRateHz = 10, double timeOutSecs = 30);
 
 private:
-    bool isInitialized_;
-    std::string frameIdOrigin_;
+    void waitForParams_(double pollRateHz, double timeOutSecs);
+    struct InterfaceParams {
+        bool frameIdMapFound{false}, frameIdMapWithOffsetFound{false}, mapFileNameFound{false}, latOriginFound{false},
+            lonOriginFound{false};
+        double latOrigin{0.}, lonOrigin{0.};
+        std::string mapFileName{""}, frameIdMap{""}, frameIdMapWithOffset{""};
+    };
+    InterfaceParams params_;
+
+    std::string frameIdMap_;
+    std::string frameIdMapWithOffset_;
     lanelet::LaneletMapConstPtr mapPtr_;
+    lanelet::LaneletMapConstPtr mapWithOffsetPtr_;
+    lanelet::LaneletMapPtr nonConstMapPtr_;
 };
 } // namespace lanelet2_interface_ros

@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- use this like a normal launch file to set up your test environment. The test tag below is used to launch your unittest node-->
+  <include file="$(find lanelet2_interface_ros)/launch/set_lanelet_map.launch">
+    <arg name="map_file_name" value="$(find lanelet2_maps)/res/mapping_example.osm" />
+    <arg name="lat_origin" value="49" />
+    <arg name="lon_origin" value="8" />
+  </include>
 
   <test test-name="test_lanelet2_interface_ros" pkg="lanelet2_interface_ros" type="lanelet2_interface_ros-test" />
 

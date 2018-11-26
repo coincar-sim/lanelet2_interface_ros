@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <param name="/lanelet2_interface_ros/map_file_name" value="$(find lanelet2_maps)/res/mapping_example.osm" />
-  <param name="/lanelet2_interface_ros/frame_id_origin" value="map" />
-  <param name="/lanelet2_interface_ros/lat_origin" value="49" />
-  <param name="/lanelet2_interface_ros/lon_origin" value="8" />
-
-</launch>
-
