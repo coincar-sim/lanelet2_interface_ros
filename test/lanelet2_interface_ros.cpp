@@ -1,7 +1,10 @@
 #include <gtest/gtest.h>
 #include <ros/ros.h>
 
+#include <lanelet2_io/Projection.h>
+#include <lanelet2_core/primitives/GPSPoint.h>
 #include "lanelet2_interface_ros.hpp"
+
 
 TEST(lanelet2_interface_ros, init) {
     lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
@@ -11,6 +14,13 @@ TEST(lanelet2_interface_ros, init) {
 
     lanelet::LaneletMapPtr nonConstMapPtr = ll2if.waitForNonConstMapPtr();
     ASSERT_TRUE(!!nonConstMapPtr);
+
+    std::shared_ptr<lanelet::Projector> projectorPtr = ll2if.waitForProjectorPtr();
+    ASSERT_TRUE(!!projectorPtr);
+
+    lanelet::BasicPoint3d point = projectorPtr->forward(lanelet::GPSPoint{49., 8.});
+    ASSERT_EQ(0., point.x());
+    ASSERT_EQ(0., point.y());
 
     ASSERT_EQ(std::string("map"), ll2if.waitForFrameIdMap());
 }

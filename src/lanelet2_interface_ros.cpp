@@ -1,15 +1,11 @@
 #include "lanelet2_interface_ros.hpp"
 
 #include <lanelet2_io/Io.h>
-#include <lanelet2_io/Projection.h>
 #include <lanelet2_projection/UTM.h>
 
 #include "exceptions.hpp"
 
 using namespace lanelet2_interface_ros;
-
-Lanelet2InterfaceRos::Lanelet2InterfaceRos() {
-}
 
 std::string Lanelet2InterfaceRos::waitForFrameIdMap(double pollRateHz, double timeOutSecs) {
     if (!params_.frameIdMapFound) {
@@ -19,23 +15,23 @@ std::string Lanelet2InterfaceRos::waitForFrameIdMap(double pollRateHz, double ti
 }
 
 lanelet::LaneletMapConstPtr Lanelet2InterfaceRos::waitForMapPtr(double pollRateHz, double timeOutSecs) {
-    if (!nonConstMapPtr_) {
-        waitForParams(pollRateHz, timeOutSecs);
-        nonConstMapPtr_ = lanelet::load(
-            params_.mapFileName,
-            lanelet::projection::UtmProjector(lanelet::Origin({params_.latOrigin, params_.lonOrigin}), true));
-    }
-    return nonConstMapPtr_;
+    return waitForNonConstMapPtr(pollRateHz, timeOutSecs);
 }
 
 lanelet::LaneletMapPtr Lanelet2InterfaceRos::waitForNonConstMapPtr(double pollRateHz, double timeOutSecs) {
     if (!nonConstMapPtr_) {
         waitForParams(pollRateHz, timeOutSecs);
-        nonConstMapPtr_ = lanelet::load(
-            params_.mapFileName,
-            lanelet::projection::UtmProjector(lanelet::Origin({params_.latOrigin, params_.lonOrigin}), true));
+        loadMap();
     }
     return nonConstMapPtr_;
+}
+
+std::shared_ptr<lanelet::Projector> Lanelet2InterfaceRos::waitForProjectorPtr(double pollRateHz, double timeOutSecs) {
+    if (!utmProjectorPtr_) {
+        waitForParams(pollRateHz, timeOutSecs);
+        loadMap();
+    }
+    return utmProjectorPtr_;
 }
 
 void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) {
@@ -64,4 +60,10 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
     errMsg = errMsg + "latOrigin=\"" + std::to_string(params_.latOrigin) + "\", ";
     errMsg = errMsg + "lonOrigin=\"" + std::to_string(params_.lonOrigin) + "\".";
     throw InitializationError(errMsg);
+}
+
+void Lanelet2InterfaceRos::loadMap() {
+    utmProjectorPtr_ = std::make_shared<lanelet::projection::UtmProjector>(
+        lanelet::Origin({params_.latOrigin, params_.lonOrigin}), true);
+    nonConstMapPtr_ = lanelet::load(params_.mapFileName, *utmProjectorPtr_);
 }
