@@ -4,7 +4,6 @@
 
 #include <lanelet2_core/LaneletMap.h>
 
-
 namespace lanelet2_interface_ros {
 class Lanelet2InterfaceRos {
 public:
@@ -19,4 +18,4 @@ private:
     std::string frameIdOrigin_;
     lanelet::LaneletMapConstPtr mapPtr_;
 };
-}
+} // namespace lanelet2_interface_ros

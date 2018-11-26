@@ -4,6 +4,8 @@
 #include <lanelet2_io/Projection.h>
 #include <lanelet2_projection/UTM.h>
 
+#include "exceptions.hpp"
+
 using namespace lanelet2_interface_ros;
 
 Lanelet2InterfaceRos::Lanelet2InterfaceRos() : isInitialized_(false), frameIdOrigin_("") {
@@ -56,7 +58,7 @@ void Lanelet2InterfaceRos::waitForInit(double pollRateHz, double timeOutSecs) {
         errMsg = errMsg + " lonOrigin ";
     if (!mapFileNameFound)
         errMsg = errMsg + " mapFileName ";
-    throw std::runtime_error(errMsg);
+    throw InitializationError(errMsg);
 }
 
 std::string Lanelet2InterfaceRos::getFrameIdOrigin() const {
