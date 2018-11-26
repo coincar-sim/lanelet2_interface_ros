@@ -26,13 +26,13 @@ std::string Lanelet2InterfaceRos::waitForFrameIdMapWithOffset(double pollRateHz,
 }
 
 lanelet::LaneletMapConstPtr Lanelet2InterfaceRos::waitForMapPtr(double pollRateHz, double timeOutSecs) {
-    if (!mapPtr_) {
+    if (!nonConstMapPtr_) {
         waitForParams_(pollRateHz, timeOutSecs);
-        mapPtr_ = lanelet::load(
+        nonConstMapPtr_ = lanelet::load(
             params_.mapFileName,
             lanelet::projection::UtmProjector(lanelet::Origin({params_.latOrigin, params_.lonOrigin}), false));
     }
-    return mapPtr_;
+    return nonConstMapPtr_;
 }
 
 lanelet::LaneletMapConstPtr Lanelet2InterfaceRos::waitForMapWithOffsetPtr(double pollRateHz, double timeOutSecs) {
