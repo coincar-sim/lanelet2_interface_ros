@@ -13,14 +13,14 @@ Lanelet2InterfaceRos::Lanelet2InterfaceRos() {
 
 std::string Lanelet2InterfaceRos::waitForFrameIdMap(double pollRateHz, double timeOutSecs) {
     if (!params_.frameIdMapFound) {
-        waitForParams_(pollRateHz, timeOutSecs);
+        waitForParams(pollRateHz, timeOutSecs);
     }
     return params_.frameIdMap;
 }
 
 lanelet::LaneletMapConstPtr Lanelet2InterfaceRos::waitForMapPtr(double pollRateHz, double timeOutSecs) {
     if (!nonConstMapPtr_) {
-        waitForParams_(pollRateHz, timeOutSecs);
+        waitForParams(pollRateHz, timeOutSecs);
         nonConstMapPtr_ = lanelet::load(
             params_.mapFileName,
             lanelet::projection::UtmProjector(lanelet::Origin({params_.latOrigin, params_.lonOrigin}), true));
@@ -30,7 +30,7 @@ lanelet::LaneletMapConstPtr Lanelet2InterfaceRos::waitForMapPtr(double pollRateH
 
 lanelet::LaneletMapPtr Lanelet2InterfaceRos::waitForNonConstMapPtr(double pollRateHz, double timeOutSecs) {
     if (!nonConstMapPtr_) {
-        waitForParams_(pollRateHz, timeOutSecs);
+        waitForParams(pollRateHz, timeOutSecs);
         nonConstMapPtr_ = lanelet::load(
             params_.mapFileName,
             lanelet::projection::UtmProjector(lanelet::Origin({params_.latOrigin, params_.lonOrigin}), true));
@@ -38,7 +38,7 @@ lanelet::LaneletMapPtr Lanelet2InterfaceRos::waitForNonConstMapPtr(double pollRa
     return nonConstMapPtr_;
 }
 
-void Lanelet2InterfaceRos::waitForParams_(double pollRateHz, double timeOutSecs) {
+void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) {
     ros::NodeHandle nh;
     ros::Rate rate(pollRateHz);
 

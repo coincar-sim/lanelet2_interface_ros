@@ -13,7 +13,7 @@ public:
     lanelet::LaneletMapPtr waitForNonConstMapPtr(double pollRateHz = 10, double timeOutSecs = 30);
 
 private:
-    void waitForParams_(double pollRateHz, double timeOutSecs);
+    void waitForParams(double pollRateHz, double timeOutSecs);
     struct InterfaceParams {
         bool frameIdMapFound{false}, mapFileNameFound{false}, latOriginFound{false}, lonOriginFound{false};
         double latOrigin{0.}, lonOrigin{0.};
