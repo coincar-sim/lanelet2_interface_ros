@@ -58,7 +58,6 @@ void Lanelet2InterfaceRos::waitForParams_(double pollRateHz, double timeOutSecs)
     ros::NodeHandle nh;
     ros::Rate rate(pollRateHz);
 
-    size_t counter = 0;
     size_t counterMax = std::max(1ul, size_t(timeOutSecs * pollRateHz));
     for (size_t i = 0; i < counterMax; ++i) {
         if (!ros::ok()) {
@@ -75,7 +74,6 @@ void Lanelet2InterfaceRos::waitForParams_(double pollRateHz, double timeOutSecs)
             return;
         } else {
             ROS_INFO_STREAM_THROTTLE(5., "lanelet2_interface_ros: Waiting... ");
-            counter++;
             rate.sleep();
         }
     }
