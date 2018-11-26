@@ -9,24 +9,19 @@ class Lanelet2InterfaceRos {
 public:
     Lanelet2InterfaceRos();
     std::string waitForFrameIdMap(double pollRateHz = 10, double timeOutSecs = 30);
-    std::string waitForFrameIdMapWithOffset(double pollRateHz = 10, double timeOutSecs = 30);
     lanelet::LaneletMapConstPtr waitForMapPtr(double pollRateHz = 10, double timeOutSecs = 30);
-    lanelet::LaneletMapConstPtr waitForMapWithOffsetPtr(double pollRateHz = 10, double timeOutSecs = 30);
     lanelet::LaneletMapPtr waitForNonConstMapPtr(double pollRateHz = 10, double timeOutSecs = 30);
 
 private:
     void waitForParams_(double pollRateHz, double timeOutSecs);
     struct InterfaceParams {
-        bool frameIdMapFound{false}, frameIdMapWithOffsetFound{false}, mapFileNameFound{false}, latOriginFound{false},
-            lonOriginFound{false};
+        bool frameIdMapFound{false}, mapFileNameFound{false}, latOriginFound{false}, lonOriginFound{false};
         double latOrigin{0.}, lonOrigin{0.};
-        std::string mapFileName{""}, frameIdMap{""}, frameIdMapWithOffset{""};
+        std::string mapFileName{""}, frameIdMap{""};
     };
     InterfaceParams params_;
 
     std::string frameIdMap_;
-    std::string frameIdMapWithOffset_;
     lanelet::LaneletMapPtr nonConstMapPtr_;
-    lanelet::LaneletMapConstPtr mapWithOffsetPtr_;
 };
 } // namespace lanelet2_interface_ros

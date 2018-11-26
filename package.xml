@@ -24,6 +24,9 @@
   <depend>lanelet2_core</depend>
   <depend>lanelet2_io</depend>
   <depend>lanelet2_projection</depend>
+  <depend>lanelet2_python</depend>
+  <depend>tf2_ros</depend>
+
   <test_depend>lanelet2_maps</test_depend>
 
   <export>
