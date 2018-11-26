@@ -11,5 +11,7 @@
   <param name="/lanelet2_interface_ros/lat_origin" value="$(arg lat_origin)" />
   <param name="/lanelet2_interface_ros/lon_origin" value="$(arg lon_origin)" />
 
+  <node pkg="lanelet2_interface_ros" type="map_to_mapWithOffset_tf_publisher.py" name="map_to_mapWithOffset_tf_publisher" output="screen" />
+
 </launch>
 
