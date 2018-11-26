@@ -21,8 +21,6 @@ find_package(AutoDeps REQUIRED COMPONENTS ${DEPENDEND_PACKAGES})
 # Mark files or folders for display in IDEs
 mrt_add_to_ide(README.md .gitlab-ci.yml msg)
 
-add_definitions(-DPKG_DIR="${CMAKE_CURRENT_LIST_DIR}")
-
 ########################
 ## add python modules ##
 ########################
