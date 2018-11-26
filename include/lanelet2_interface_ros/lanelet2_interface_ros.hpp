@@ -26,8 +26,7 @@ private:
 
     std::string frameIdMap_;
     std::string frameIdMapWithOffset_;
-    lanelet::LaneletMapConstPtr mapPtr_;
-    lanelet::LaneletMapConstPtr mapWithOffsetPtr_;
     lanelet::LaneletMapPtr nonConstMapPtr_;
+    lanelet::LaneletMapConstPtr mapWithOffsetPtr_;
 };
 } // namespace lanelet2_interface_ros
