@@ -22,7 +22,7 @@ void Lanelet2InterfaceRos::waitForInit(double pollRateHz, double timeOutSecs) {
     std::string mapFileName;
 
     size_t counter = 0;
-    size_t counterMax = size_t(timeOutSecs * pollRateHz);
+    size_t counterMax = std::max(1ul, size_t(timeOutSecs * pollRateHz));
     while (ros::ok() && counter < counterMax) {
         frameIdFound = nh.getParam("/lanelet2_interface_ros/frame_id_origin", frameIdOrigin_);
         latOriginFound = nh.getParam("/lanelet2_interface_ros/lat_origin", latOrigin);
