@@ -1,4 +1,4 @@
-set(MRT_PKG_VERSION 2.2)
+set(MRT_PKG_VERSION 2.2.1)
 # Modify only if you know what you are doing!
 cmake_minimum_required(VERSION 2.8.12)
 project(lanelet2_interface_ros)
@@ -19,7 +19,7 @@ find_package(AutoDeps REQUIRED COMPONENTS ${DEPENDEND_PACKAGES})
 #find_package(...)
 
 # Mark files or folders for display in IDEs
-mrt_add_to_ide(README.md .gitlab-ci.yml)
+mrt_add_to_ide(README.md .gitlab-ci.yml msg)
 
 ########################
 ## add python modules ##
