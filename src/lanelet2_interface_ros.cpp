@@ -58,7 +58,7 @@ void Lanelet2InterfaceRos::waitForParams_(double pollRateHz, double timeOutSecs)
     ros::NodeHandle nh;
     ros::Rate rate(pollRateHz);
 
-    size_t counterMax = std::max(1ul, size_t(timeOutSecs * pollRateHz));
+    size_t counterMax = size_t(std::max(1., timeOutSecs * pollRateHz));
     for (size_t i = 0; i < counterMax; ++i) {
         if (!ros::ok()) {
             throw InitializationError("!ros::ok()");
