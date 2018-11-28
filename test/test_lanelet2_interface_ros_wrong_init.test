@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- launchfile set_lanelet_map.launch not used here -->
+
+  <test test-name="test_lanelet2_interface_ros_wrong_init" pkg="lanelet2_interface_ros" type="test_lanelet2_interface_ros_wrong_init-test" />
+
+</launch>

@@ -6,6 +6,10 @@
     <arg name="lon_origin" value="8" />
   </include>
 
-  <test test-name="test_lanelet2_interface_ros" pkg="lanelet2_interface_ros" type="lanelet2_interface_ros-test" />
+  <!-- cpp interface -->
+  <test test-name="test_lanelet2_interface_ros_cpp" pkg="lanelet2_interface_ros" type="test_lanelet2_interface_ros-test" />
+
+  <!-- python interface -->
+  <test test-name="test_lanelet2_interface_ros_python" pkg="lanelet2_interface_ros" type="test_lanelet2_interface_ros.py" />
 
 </launch>
