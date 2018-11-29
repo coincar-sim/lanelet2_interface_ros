@@ -2,7 +2,7 @@
 <launch>
 
   <arg name="map_file_name" />
-  <arg name="lat_origin" default="49.81452" />
+  <arg name="lat_origin" default="49.01452" />
   <arg name="lon_origin" default="8.4171937" />
 
   <param name="/lanelet2_interface_ros/map_file_name" value="$(arg map_file_name)" />
