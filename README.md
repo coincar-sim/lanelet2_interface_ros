@@ -5,7 +5,7 @@
 
 ROS Interface for lanelet2:
 
-** Use this to avoid 1 mio different lat/lon to x/y transformations and different maps being loaded **
+**Use this to avoid 1 mio different lat/lon to x/y transformations and different maps being loaded**
 
 Just include this in your ROS node like
 
@@ -15,7 +15,6 @@ Just include this in your ROS node like
 //...
 
 lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
-ll2if.waitForInit();
-lanelet::LaneletMapConstPtr mapPtr = ll2if.getMapPtr();
+lanelet::LaneletMapConstPtr mapPtr = ll2if.waitForMapPtr(10, 30); // pull with 10Hz for max. 30s
 ```
 and launch/include the launchfile [set_lanelet_map.launch](/launch/set_lanelet_map.launch) to receive a loaded map.
