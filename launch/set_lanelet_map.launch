@@ -4,10 +4,12 @@
   <arg name="map_file_name" />
   <arg name="lat_origin" default="49.01452" />
   <arg name="lon_origin" default="8.4171937" />
+  <arg name="map_frame_with_offset" default="map" />
+  <arg name="actual_utm_frame_no_offset" default="acutal_utm_no_offset" />
 
   <param name="/lanelet2_interface_ros/map_file_name" value="$(arg map_file_name)" />
-  <param name="/lanelet2_interface_ros/map_frame_id" value="map" />
-  <param name="/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id" value="acutal_utm_no_offset" />
+  <param name="/lanelet2_interface_ros/map_frame_id" value="$(arg map_frame_with_offset)" />
+  <param name="/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id" value="$(arg actual_utm_frame_no_offset)" />
   <param name="/lanelet2_interface_ros/lat_origin" value="$(arg lat_origin)" />
   <param name="/lanelet2_interface_ros/lon_origin" value="$(arg lon_origin)" />
 
