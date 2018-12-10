@@ -5,7 +5,7 @@
   <arg name="lat_origin" default="49.01452" />
   <arg name="lon_origin" default="8.4171937" />
   <arg name="map_frame_with_offset" default="map" />
-  <arg name="actual_utm_frame_no_offset" default="acutal_utm_no_offset" />
+  <arg name="actual_utm_frame_no_offset" default="actual_utm_no_offset" />
 
   <param name="/lanelet2_interface_ros/map_file_name" value="$(arg map_file_name)" />
   <param name="/lanelet2_interface_ros/map_frame_id" value="$(arg map_frame_with_offset)" />
@@ -16,4 +16,3 @@
   <node pkg="lanelet2_interface_ros" type="map_frame_to_utm_tf_publisher.py" name="map_frame_to_utm_tf_publisher" output="screen" />
 
 </launch>
-
