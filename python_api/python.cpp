@@ -26,6 +26,9 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {
             ros::init(std::map<std::string, std::string>{},
                       "lanelet2_interface_ros_for_python",
                       ros::init_options::AnonymousName);
+            // Keep a NodeHandle to prevent shutdown and start being called repeatedly
+            // Otherwize the console does not work anymore (no ros logging anymore)
+            nhPtr_ = boost::make_shared<ros::NodeHandle>();
         }
         std::string waitForFrameIdMap(double pollRateHz, double timeOutSecs) {
             return Lanelet2InterfaceRos::waitForFrameIdMap(pollRateHz, timeOutSecs);
@@ -39,6 +42,9 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {
         std::shared_ptr<lanelet::Projector> waitForProjectorPtr(double pollRateHz, double timeOutSecs) {
             return Lanelet2InterfaceRos::waitForProjectorPtr(pollRateHz, timeOutSecs);
         }
+
+    private:
+        ros::NodeHandlePtr nhPtr_;
     };
 
     class_<Lanelet2InterfaceRosPythonWrapper>("Lanelet2InterfaceRos")
