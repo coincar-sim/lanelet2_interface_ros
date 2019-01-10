@@ -43,11 +43,17 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {
     // instead of initializing roscpp which takes the signals from rospy, we read the params using rospy
     class Lanelet2InterfaceRosPythonWrapper : Lanelet2InterfaceRos {
     public:
-        Lanelet2InterfaceRosPythonWrapper() : Lanelet2InterfaceRos() {
+        std::string waitForFrameIdMapNoDefault(double pollRateHz, double timeOutSecs) {
+            return waitForFrameIdMap(pollRateHz, timeOutSecs);
+        }
+        lanelet::LaneletMapPtr waitForNonConstMapPtrNoDefault(double pollRateHz, double timeOutSecs) {
+            return waitForNonConstMapPtr(pollRateHz, timeOutSecs);
+        }
+        std::shared_ptr<lanelet::Projector> waitForProjectorPtrNoDefault(double pollRateHz, double timeOutSecs) {
+            return waitForProjectorPtr(pollRateHz, timeOutSecs);
         }
 
-        Lanelet2InterfaceRosPythonWrapper(const Lanelet2InterfaceRosPythonWrapper&) = default;
-
+    private:
         void waitForParams(double pollRateHz, double timeOutSecs) override {
             // duplicate of cpp code but using rospy instead of roscpp
             auto rospy = import("rospy");
@@ -82,16 +88,6 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {
             errMsg = errMsg + "latOrigin=\"" + std::to_string(params_.latOrigin) + "\", ";
             errMsg = errMsg + "lonOrigin=\"" + std::to_string(params_.lonOrigin) + "\".";
             throw InitializationError(errMsg);
-        }
-
-        std::string waitForFrameIdMapNoDefault(double pollRateHz, double timeOutSecs) {
-            return waitForFrameIdMap(pollRateHz, timeOutSecs);
-        }
-        lanelet::LaneletMapPtr waitForNonConstMapPtrNoDefault(double pollRateHz, double timeOutSecs) {
-            return waitForNonConstMapPtr(pollRateHz, timeOutSecs);
-        }
-        std::shared_ptr<lanelet::Projector> waitForProjectorPtrNoDefault(double pollRateHz, double timeOutSecs) {
-            return waitForProjectorPtr(pollRateHz, timeOutSecs);
         }
     };
 
