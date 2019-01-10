@@ -11,6 +11,7 @@ TEST(lanelet2_interface_ros, init) {
 
     lanelet::LaneletMapConstPtr mapPtr = ll2if.waitForMapPtr();
     ASSERT_TRUE(!!mapPtr);
+    EXPECT_EQ(372, mapPtr->laneletLayer.size()) << "expected 372 lanelet in map";
 
     lanelet::LaneletMapPtr nonConstMapPtr = ll2if.waitForNonConstMapPtr();
     ASSERT_TRUE(!!nonConstMapPtr);
