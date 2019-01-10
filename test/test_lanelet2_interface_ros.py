@@ -23,6 +23,9 @@ class TestLanelet2InterfacePython(unittest.TestCase):
 
         self.assertEqual("map", ll2if.waitForFrameIdMap(10., 10.))
 
+        llmap = ll2if.waitForNonConstMapPtr(10.,10.)
+        self.assertEqual(372, len(llmap.laneletLayer))  # expect 372 elements
+
 
 if __name__ == '__main__':
     import rostest
