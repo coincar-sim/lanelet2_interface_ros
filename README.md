@@ -1,12 +1,12 @@
 # LANELET2 INTERFACE ROS
 
-![build status](https://gitlab.mrt.uni-karlsruhe.de/lanelet2/lanelet2_interface_ros/badges/master/build.svg)
-![coverage report](https://gitlab.mrt.uni-karlsruhe.de/lanelet2/lanelet2_interface_ros/badges/master/coverage.svg)
+Library for providing a loaded lanelet2 map and the used geodetic (latitude/ longitude) to Cartesian (easting x/ northing y) projection along with the frame that the x/y coordinates are referenced to.
 
-ROS Interface for lanelet2:
+Use this to ensure you use the same map and the same lat/lon to x/y projection in all your nodes.
 
-**Use this to avoid 1 mio different lat/lon to x/y transformations and different maps being loaded**
+## Usage
 
+### C++
 Just include this in your cpp ROS node like
 
 ```cpp
@@ -18,6 +18,7 @@ lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
 lanelet::LaneletMapConstPtr mapPtr = ll2if.waitForMapPtr(10, 30); // pull with 10Hz for max. 30s
 ```
 
+### Python
 or in your python ROS node like
 
 ```python
@@ -32,3 +33,6 @@ llmap = ll2if.waitForNonConstMapPtr(10, 30);  # pull with 10Hz for max. 30s
 ```
 
 and launch/include the launchfile [set_lanelet_map.launch](/launch/set_lanelet_map.launch) to receive a loaded map.
+
+## License
+This package is distributed under the 3-Clause BSD License, see [LICENSE](LICENSE).
