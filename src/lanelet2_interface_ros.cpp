@@ -69,7 +69,12 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
     ros::Rate rate(pollRateHz);
 
     size_t counterMax = size_t(std::max(1., timeOutSecs * pollRateHz));
-    for (size_t i = 0; i < counterMax; ++i) {
+    size_t increment{1};
+    if (timeOutSecs < 0) {
+        increment = 0; // run infinitely long
+    }
+
+    for (size_t i = 0; i < counterMax; i += increment) {
         if (!ros::ok()) {
             throw InitializationError("!ros::ok()");
         }
@@ -80,7 +85,7 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
         if (params_.frameIdMapFound && params_.latOriginFound && params_.lonOriginFound && params_.mapFileNameFound) {
             return;
         } else {
-            ROS_INFO_STREAM_THROTTLE(5., "lanelet2_interface_ros: Waiting... ");
+            ROS_INFO_STREAM_DELAYED_THROTTLE(5., "lanelet2_interface_ros: Waiting... ");
             rate.sleep();
         }
     }
