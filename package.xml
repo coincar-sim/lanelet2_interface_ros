@@ -4,10 +4,10 @@
   <version>1.0.0</version>
   <description>Interface between lanelet2 and ROS.</description>
 
-  <license>contact-the-maintainer</license>
+  <license>BSD</license>
   <maintainer email="maximilian.naumann@kit.edu">Maximilian Naumann</maintainer>
 
-  <url type="repository">https://gitlab.mrt.uni-karlsruhe.de/lanelet2/lanelet2_interface_ros</url>
+  <url type="repository">https://github.com/coincar-sim/lanelet2_interface_ros</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>mrt_cmake_modules</build_depend>
@@ -30,6 +30,4 @@
 
   <test_depend>lanelet2_maps</test_depend>
 
-  <export>
-  </export>
 </package>
