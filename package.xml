@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lanelet2_interface_ros</name>
+  <version>1.0.0</version>
+  <description>Interface between lanelet2 and ROS.</description>
+
+  <license>BSD</license>
+  <maintainer email="maximilian.naumann@kit.edu">Maximilian Naumann</maintainer>
+
+  <url type="repository">https://github.com/coincar-sim/lanelet2_interface_ros</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>mrt_cmake_modules</build_depend>
+  <build_depend>rosinterface_handler</build_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <test_depend>gtest</test_depend>
+  <test_depend>rostest</test_depend>
+
+  <build_depend>roscpp</build_depend>
+  <depend>roslib</depend>
+  <depend>nodelet</depend>
+  <depend>boost-python</depend>
+
+  <depend>lanelet2_core</depend>
+  <depend>lanelet2_io</depend>
+  <depend>lanelet2_projection</depend>
+  <depend>lanelet2_python</depend>
+  <depend>tf2_ros</depend>
+
+  <test_depend>lanelet2_maps</test_depend>
+
+</package>
