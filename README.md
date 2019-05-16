@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/coincar-sim/lanelet2_interface_ros.svg)](https://travis-ci.org/coincar-sim/lanelet2_interface_ros)
+
 # LANELET2 INTERFACE ROS
 
 Library for providing a loaded lanelet2 map and the used geodetic (latitude/ longitude) to Cartesian (easting x/ northing y) projection along with the frame that the x/y coordinates are referenced to.
