@@ -30,36 +30,12 @@
 
 #pragma once
 
-#include <ros/ros.h>
+#include <lanelet2_core/Exceptions.h>
 
-#include <lanelet2_core/LaneletMap.h>
-#include <lanelet2_io/Projection.h>
-
-
-namespace lanelet2_interface_ros {
-class Lanelet2InterfaceRos {
-public:
-    Lanelet2InterfaceRos() = default;
-    virtual ~Lanelet2InterfaceRos() = default;
-    std::string waitForFrameIdMap(double pollRateHz = 10, double timeOutSecs = -1);
-    lanelet::LaneletMapConstPtr waitForMapPtr(double pollRateHz = 10, double timeOutSecs = -1);
-    lanelet::LaneletMapPtr waitForNonConstMapPtr(double pollRateHz = 10, double timeOutSecs = -1);
-    std::shared_ptr<lanelet::Projector> waitForProjectorPtr(double pollRateHz = 10, double timeOutSecs = -1);
-
-protected:
-    virtual void waitForParams(double pollRateHz, double timeOutSecs);
-    struct InterfaceParams {
-        bool frameIdMapFound{false}, mapFileNameFound{false}, latOriginFound{false}, lonOriginFound{false};
-        double latOrigin{0.}, lonOrigin{0.};
-        std::string mapFileName{""}, frameIdMap{""};
-    };
-    InterfaceParams params_;
-
-private:
-    void loadMap();
-
-    std::string frameIdMap_;
-    lanelet::LaneletMapPtr nonConstMapPtr_;
-    std::shared_ptr<lanelet::Projector> utmProjectorPtr_;
+namespace lanelet {
+namespace interface {
+class InitializationError : public LaneletError {
+    using LaneletError::LaneletError;
 };
-} // namespace lanelet2_interface_ros
+} // namespace interface
+} // namespace lanelet

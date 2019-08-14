@@ -30,18 +30,15 @@
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
+#include "Exceptions.h"
+#include "Interface.h"
 
-#include "exceptions.hpp"
-#include "lanelet2_interface_ros.hpp"
-
-TEST(lanelet2_interface_ros, throwOnTimeout) {
-    lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
-
-    ASSERT_THROW(ll2if.waitForMapPtr(10, 5), lanelet2_interface_ros::InitializationError);
-
-    ASSERT_THROW(ll2if.waitForNonConstMapPtr(10, 5), lanelet2_interface_ros::InitializationError);
-
-    ASSERT_THROW(ll2if.waitForFrameIdMap(10, 5), lanelet2_interface_ros::InitializationError);
+TEST(lanelet2_interface_ros, throwOnUnsetParams) {
+    auto& lanelets = lanelet::interface::LaneletRosInterface::instance();
+    using InitError = lanelet::interface::InitializationError;
+    ASSERT_THROW(lanelets.getLaneletMap(), InitError); // NOLINT(cppcoreguidelines-avoid-goto)
+    ASSERT_THROW(lanelets.getProjector(), InitError);  // NOLINT(cppcoreguidelines-avoid-goto)
+    ASSERT_THROW(lanelets.getFrameIdMap(), InitError); // NOLINT(cppcoreguidelines-avoid-goto)
 }
 
 
