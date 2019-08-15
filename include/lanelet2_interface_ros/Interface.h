@@ -37,6 +37,7 @@
 
 namespace lanelet {
 namespace interface {
+//! These params might be requested from ParamReader
 namespace params {
 constexpr char LatOrigin[] = "lat_origin";
 constexpr char LonOrigin[] = "lon_origin";
@@ -44,15 +45,24 @@ constexpr char MapFrameId[] = "map_frame_id";
 constexpr char MapFileName[] = "map_file_name";
 } // namespace params
 
+//! @brief Abstract base class to retrieve parameters needed by LaneletRosInterface and its childs.
+//!
+//! Provides a customization point to provide different sources of parameters
 class ParamReader { // NOLINT(cppcoreguidelines-special-member-functions)
 public:
     virtual ~ParamReader() = default;
+    //! Returns the requested interface class (used by LaneletRosInterface::instance)
     virtual std::string interfaceType() const = 0;
+
+    //! Returns the value of a string parameter
     virtual std::string getString(const std::string& key) const = 0;
+
+    //! Returns the value of a double parameter
     virtual double getDouble(const std::string& key) const = 0;
 };
 using ParamReaderUPtr = std::unique_ptr<ParamReader>;
 
+//! Implements a parameter reader that reads parameters from ROS parameter server
 class CppRosparamReader : public ParamReader {
 public:
     std::string interfaceType() const override;
@@ -60,11 +70,19 @@ public:
     double getDouble(const std::string& key) const override;
 };
 
-//! Abstract base clase for an interface to lanelet2 maps/map data
+//! @brief Abstract base clase providing an interface to lanelet2 maps/map data.
+//!
+//! All functions are safe to be used from multiple threads.
 class LaneletRosInterface {
 public:
+    //! @brief Returns a global interface object. The actual type returns depends on the interfaceType returned by
+    //! paramReader
+    //!
+    //! @note The parameters are only used when the function is called for the first time. From then on, it is assumed
+    //! that they are identical.
     static LaneletRosInterface& instance(ParamReaderUPtr paramReader = std::make_unique<CppRosparamReader>());
 
+    //! Instanciates a LaneletRosInterface object
     explicit LaneletRosInterface(ParamReaderUPtr paramReader = std::make_unique<CppRosparamReader>())
             : paramReader_{std::move(paramReader)} {
     }
@@ -74,26 +92,42 @@ public:
     LaneletRosInterface& operator=(const LaneletRosInterface& rhs) = delete;
     virtual ~LaneletRosInterface() noexcept = default;
 
-    // Synchrononous versions
-    std::string getFrameIdMap() {
+    //! Synchronous version to obtain the frame id of the map
+    //! @throws InitializationError if parameters could not be retrieved
+    std::string getFrameIdMap() const {
         return getFrameIdMapAsync().get();
     }
-    LaneletMapConstPtr getLaneletMap() {
+
+    //! Synchronous version to obtain the laneletMap. The lanelet map is cached, so multiple calls will retrieve the
+    //! same map. Be aware that this call might take a while to return since the whole map has to be parsed first.
+    //! @throws InitializationError if parameters could not be retrieved
+    LaneletMapConstPtr getLaneletMap() const {
         return getLaneletMapAsync().get();
     }
-    LaneletMapPtr getMutableLaneletMap() {
+
+    //! Synchronous version to obtain a mutable laneletMap. The lanelet map is cached, so multiple calls will retrieve
+    //! the same map and see all changes to this map. Mutations from multiple threads are not thread safe.
+    //! Depending on the implementation, changes might not be visible in the immutable lanelet map.
+    //! @throws InitializationError if parameters could not be retrieved
+    LaneletMapPtr getMutableLaneletMap() const {
         return getMutableLaneletMapAsync().get();
     }
-    std::shared_ptr<lanelet::Projector> getProjector() {
+
+    //! Synchronous version to retrieve the projector used for transforming the map
+    //! @throws InitializationError if parameters could not be retrieved
+    std::shared_ptr<lanelet::Projector> getProjector() const {
         return getProjectorAsync().get();
     }
 
-    // Asynchronous versions. Careful: The lifetime of this future is bound to the lifetime of this object! Make sure it
-    // still exists when calling "get()"!
-    virtual std::shared_future<std::string> getFrameIdMapAsync() = 0;
-    virtual std::shared_future<LaneletMapConstPtr> getLaneletMapAsync() = 0;
-    virtual std::shared_future<LaneletMapPtr> getMutableLaneletMapAsync() = 0;
-    virtual std::shared_future<std::shared_ptr<lanelet::Projector>> getProjectorAsync() = 0;
+    /// @name Asynchronous versions
+    /// @note The lifetime of this future is bound to the lifetime of this object! Make sure it still exists when
+    /// calling "get()"!
+    ///@{
+    virtual std::shared_future<std::string> getFrameIdMapAsync() const = 0;          //!<@see getFrameIdMap
+    virtual std::shared_future<LaneletMapConstPtr> getLaneletMapAsync() const = 0;   //!<@see getLaneletMap
+    virtual std::shared_future<LaneletMapPtr> getMutableLaneletMapAsync() const = 0; //!<@see getMutableLaneletMap
+    virtual std::shared_future<std::shared_ptr<lanelet::Projector>> getProjectorAsync() const = 0; //!<@see getProjector
+    ///@}
 
 protected:
     const ParamReader& paramReader() const {

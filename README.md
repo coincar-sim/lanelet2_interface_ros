@@ -16,22 +16,31 @@ Just include this in your cpp ROS node like
 
 //...
 
-lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
-lanelet::LaneletMapConstPtr mapPtr = ll2if.waitForMapPtr(10, 30); // pull with 10Hz for max. 30s
+lanelet::interface::LaneletRosInterface& ll2if = lanelet::interface::LaneletRosInterface::instance();
+lanelet::LaneletMapConstPtr mapPtr = ll2if.getLaneletMap(); // retrieves the map. May take a while if this if the first call.
+```
+
+If you don't want to slow down initialization of your node with the time it takes to load a map, use the async version:
+```cpp
+auto& ll2if = lanelet::interface::LaneletRosInterface::instance();
+std::shared_future<lanelet::LaneletMapConstPtr> mapFuture = ll2if.getLaneletMapAsync(); // spawns a new thread that loads the map, returns instantly
+
+//... do other stuff or put this e.g. in a message callback
+if(mapFuture.valid()) {
+    // map has finally arrived, retrive it
+    lanelet::LaneletMapConstPtr mapPtr = mapFuture.get();
+}
 ```
 
 ### Python
 or in your python ROS node like
 
 ```python
-from lanelet2_interface_ros import Lanelet2InterfaceRos
-
+import lanelet2_interface_ros as llt2if
 # ...
 
 # somewhere after rospy.init_node()
-ll2if = Lanelet2InterfaceRos()
-llmap = ll2if.waitForNonConstMapPtr(10, 30);  # pull with 10Hz for max. 30s
-
+llmap = ll2if.getLaneletMap()
 ```
 
 and launch/include the launchfile [set_lanelet_map.launch](/launch/set_lanelet_map.launch) to receive a loaded map.

@@ -64,7 +64,7 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {
     using namespace boost::python;
     using namespace lanelet::interface;
 
-    def("getFrameIdMap", +[] { return ifInstance().getFrameIdMap(); });
-    def("getLaneletMap", +[] { return ifInstance().getLaneletMap(); });
-    def("getProjector", +[] { return ifInstance().getProjector(); });
+    def("getFrameIdMap", +[] { return ifInstance().getFrameIdMap(); }, "Returns the tf frame id for the lanelet map");
+    def("getLaneletMap", +[] { return ifInstance().getLaneletMap(); }, "Returns the current lanelet map");
+    def("getProjector", +[] { return ifInstance().getProjector(); }, "Returns the current transformation object");
 }

@@ -34,6 +34,7 @@
 
 namespace lanelet {
 namespace interface {
+//! Thrown if the interface fails to initialize
 class InitializationError : public LaneletError {
     using LaneletError::LaneletError;
 };
