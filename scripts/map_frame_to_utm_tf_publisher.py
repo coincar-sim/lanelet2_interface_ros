@@ -62,9 +62,10 @@ if __name__ == '__main__':
         lon_origin = float(rospy.get_param("/lanelet2_interface_ros/lon_origin"))
 
         map_frame_id = rospy.get_param("/lanelet2_interface_ros/map_frame_id")
-        actual_utm_with_no_offset_frame_id = rospy.get_param("/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id")
+        actual_utm_with_no_offset_frame_id = rospy.get_param(
+            "/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id")
         if lat_origin is not None and lon_origin is not None \
-            and map_frame_id is not None and actual_utm_with_no_offset_frame_id is not None:
+                and map_frame_id is not None and actual_utm_with_no_offset_frame_id is not None:
             init = True
             break
 
