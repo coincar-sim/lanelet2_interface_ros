@@ -37,11 +37,11 @@
 TEST(lanelet2_interface_ros, throwOnTimeout) {
     lanelet2_interface_ros::Lanelet2InterfaceRos ll2if;
 
-    ASSERT_THROW(ll2if.waitForMapPtr(10, 5), lanelet2_interface_ros::InitializationError);
+    ASSERT_THROW(ll2if.waitForMapPtr(10, 5), lanelet2_interface_ros::InitializationError); // NOLINT(cppcoreguidelines-avoid-goto)
 
-    ASSERT_THROW(ll2if.waitForNonConstMapPtr(10, 5), lanelet2_interface_ros::InitializationError);
+    ASSERT_THROW(ll2if.waitForNonConstMapPtr(10, 5), lanelet2_interface_ros::InitializationError); // NOLINT(cppcoreguidelines-avoid-goto)
 
-    ASSERT_THROW(ll2if.waitForFrameIdMap(10, 5), lanelet2_interface_ros::InitializationError);
+    ASSERT_THROW(ll2if.waitForFrameIdMap(10, 5), lanelet2_interface_ros::InitializationError); // NOLINT(cppcoreguidelines-avoid-goto)
 }
 
 

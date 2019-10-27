@@ -38,10 +38,10 @@
 using namespace lanelet2_interface_ros;
 
 std::string Lanelet2InterfaceRos::waitForFrameIdMap(double pollRateHz, double timeOutSecs) {
-    if (!params_.frameIdMapFound) {
+    if (!params.frameIdMapFound) {
         waitForParams(pollRateHz, timeOutSecs);
     }
-    return params_.frameIdMap;
+    return params.frameIdMap;
 }
 
 lanelet::LaneletMapConstPtr Lanelet2InterfaceRos::waitForMapPtr(double pollRateHz, double timeOutSecs) {
@@ -64,7 +64,7 @@ std::shared_ptr<lanelet::Projector> Lanelet2InterfaceRos::waitForProjectorPtr(do
     return utmProjectorPtr_;
 }
 
-void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) {
+void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) { // NOLINT(readability-function-size)
     ros::NodeHandle nh;
     ros::Rate rate(pollRateHz);
 
@@ -78,11 +78,11 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
         if (!ros::ok()) {
             throw InitializationError("!ros::ok()");
         }
-        params_.frameIdMapFound = nh.getParam("/lanelet2_interface_ros/map_frame_id", params_.frameIdMap);
-        params_.latOriginFound = nh.getParam("/lanelet2_interface_ros/lat_origin", params_.latOrigin);
-        params_.lonOriginFound = nh.getParam("/lanelet2_interface_ros/lon_origin", params_.lonOrigin);
-        params_.mapFileNameFound = nh.getParam("/lanelet2_interface_ros/map_file_name", params_.mapFileName);
-        if (params_.frameIdMapFound && params_.latOriginFound && params_.lonOriginFound && params_.mapFileNameFound) {
+        params.frameIdMapFound = nh.getParam("/lanelet2_interface_ros/map_frame_id", params.frameIdMap);
+        params.latOriginFound = nh.getParam("/lanelet2_interface_ros/lat_origin", params.latOrigin);
+        params.lonOriginFound = nh.getParam("/lanelet2_interface_ros/lon_origin", params.lonOrigin);
+        params.mapFileNameFound = nh.getParam("/lanelet2_interface_ros/map_file_name", params.mapFileName);
+        if (params.frameIdMapFound && params.latOriginFound && params.lonOriginFound && params.mapFileNameFound) {
             return;
         } else {
             ROS_INFO_STREAM_DELAYED_THROTTLE(5., "lanelet2_interface_ros: Waiting... ");
@@ -90,15 +90,15 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
         }
     }
     std::string errMsg{"waitForInit failed due to timeout, information up to now: "};
-    errMsg = errMsg + "frameIdMap=\"" + params_.frameIdMap + "\", ";
-    errMsg = errMsg + "mapFileName=\"" + params_.mapFileName + "\", ";
-    errMsg = errMsg + "latOrigin=\"" + std::to_string(params_.latOrigin) + "\", ";
-    errMsg = errMsg + "lonOrigin=\"" + std::to_string(params_.lonOrigin) + "\".";
+    errMsg = errMsg + "frameIdMap=\"" + params.frameIdMap + "\", ";
+    errMsg = errMsg + "mapFileName=\"" + params.mapFileName + "\", ";
+    errMsg = errMsg + "latOrigin=\"" + std::to_string(params.latOrigin) + "\", ";
+    errMsg = errMsg + "lonOrigin=\"" + std::to_string(params.lonOrigin) + "\".";
     throw InitializationError(errMsg);
 }
 
 void Lanelet2InterfaceRos::loadMap() {
     utmProjectorPtr_ = std::make_shared<lanelet::projection::UtmProjector>(
-        lanelet::Origin({params_.latOrigin, params_.lonOrigin}), true);
-    nonConstMapPtr_ = lanelet::load(params_.mapFileName, *utmProjectorPtr_);
+        lanelet::Origin({params.latOrigin, params.lonOrigin}), true);
+    nonConstMapPtr_ = lanelet::load(params.mapFileName, *utmProjectorPtr_);
 }
