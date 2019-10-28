@@ -36,7 +36,7 @@ if(mapFuture.valid()) {
 or in your python ROS node like
 
 ```python
-import lanelet2_interface_ros as llt2if
+import lanelet2_interface_ros as ll2if
 # ...
 
 # somewhere after rospy.init_node()
