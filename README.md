@@ -27,7 +27,7 @@ std::shared_future<lanelet::LaneletMapConstPtr> mapFuture = ll2if.getLaneletMapA
 
 //... do other stuff or put this e.g. in a message callback
 if(mapFuture.valid()) {
-    // map has finally arrived, retrive it
+    // map has finally arrived, retrieve it
     lanelet::LaneletMapConstPtr mapPtr = mapFuture.get();
 }
 ```
