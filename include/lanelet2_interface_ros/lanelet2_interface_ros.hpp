@@ -37,7 +37,7 @@
 
 
 namespace lanelet2_interface_ros {
-class Lanelet2InterfaceRos {
+class Lanelet2InterfaceRos { // NOLINT(cppcoreguidelines-special-member-functions)
 public:
     Lanelet2InterfaceRos() = default;
     virtual ~Lanelet2InterfaceRos() = default;
@@ -53,7 +53,7 @@ protected:
         double latOrigin{0.}, lonOrigin{0.};
         std::string mapFileName{""}, frameIdMap{""};
     };
-    InterfaceParams params_;
+    InterfaceParams params;
 
 private:
     void loadMap();
