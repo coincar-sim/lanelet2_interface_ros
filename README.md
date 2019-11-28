@@ -25,12 +25,13 @@ or in your python ROS node like
 
 ```python
 from lanelet2_interface_ros import Lanelet2InterfaceRos
+import lanelet2
 
 # ...
 
 # somewhere after rospy.init_node()
 ll2if = Lanelet2InterfaceRos()
-llmap = ll2if.waitForNonConstMapPtr(10, 30);  # pull with 10Hz for max. 30s
+llmap = ll2if.waitForNonConstMapPtr(10, 30)  # pull with 10Hz for max. 30s
 
 ```
 
