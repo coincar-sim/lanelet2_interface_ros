@@ -20,7 +20,7 @@
   <build_depend>roscpp</build_depend>
   <depend>roslib</depend>
   <depend>nodelet</depend>
-  <depend>boost-python</depend>
+  <depend>libboost-python-dev</depend>
 
   <depend>lanelet2_core</depend>
   <depend>lanelet2_io</depend>
