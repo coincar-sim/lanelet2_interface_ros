@@ -47,19 +47,20 @@ public:
     std::shared_ptr<lanelet::Projector> waitForProjectorPtr(double pollRateHz = 10, double timeOutSecs = -1);
 
 protected:
-    virtual void waitForParams(double pollRateHz, double timeOutSecs);
     struct InterfaceParams {
         bool frameIdMapFound{false}, mapFileNameFound{false}, latOriginFound{false}, lonOriginFound{false};
         double latOrigin{0.}, lonOrigin{0.};
         std::string mapFileName{""}, frameIdMap{""};
     };
-    InterfaceParams params;
 
 private:
     void loadMap();
+    void waitForParams(double pollRateHz, double timeOutSecs);
+    virtual InterfaceParams waitForParamsImpl(double pollRateHz, double timeOutSecs);
 
     std::string frameIdMap_;
     lanelet::LaneletMapPtr nonConstMapPtr_;
     std::shared_ptr<lanelet::Projector> utmProjectorPtr_;
+    InterfaceParams params_;
 };
 } // namespace lanelet2_interface_ros

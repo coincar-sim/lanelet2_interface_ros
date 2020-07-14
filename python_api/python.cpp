@@ -51,10 +51,9 @@ inline bool getParamLikeInCpp(const std::string& paramName, T& paramValue) {
     bool hasParam = boost::python::extract<bool>(rospy.attr("has_param")(paramName));
     if (!hasParam) {
         return false;
-    } else {
-        paramValue = boost::python::extract<T>(rospy.attr("get_param")(paramName));
-        return true;
     }
+    paramValue = boost::python::extract<T>(rospy.attr("get_param")(paramName));
+    return true;
 }
 inline bool rosOk() {
     auto rospy = boost::python::import("rospy");
@@ -84,12 +83,14 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) { // NOLINT(readability-function-siz
         }
 
     private:
-        void waitForParams(double pollRateHz, double timeOutSecs) override {
+        Lanelet2InterfaceRos::InterfaceParams waitForParamsImpl(double pollRateHz, double timeOutSecs) override {
             // duplicate of cpp code but using rospy instead of roscpp
             auto rospy = import("rospy");
             auto rospyRate = rospy.attr("Rate")(pollRateHz);
 
             auto rospyLoginfoThrottle = rospy.attr("loginfo_throttle");
+
+            Lanelet2InterfaceRos::InterfaceParams params;
 
             size_t counterMax = size_t(std::max(1., timeOutSecs * pollRateHz));
             for (size_t i = 0; i < counterMax; ++i) {
@@ -106,11 +107,10 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) { // NOLINT(readability-function-siz
                     rospy_helpers::getParamLikeInCpp("/lanelet2_interface_ros/map_file_name", params.mapFileName);
                 if (params.frameIdMapFound && params.latOriginFound && params.lonOriginFound &&
                     params.mapFileNameFound) {
-                    return;
-                } else {
-                    rospyLoginfoThrottle(5., "lanelet2_interface_ros: Waiting... ");
-                    rospyRate.attr("sleep")();
+                    return params;
                 }
+                rospyLoginfoThrottle(5., "lanelet2_interface_ros: Waiting... ");
+                rospyRate.attr("sleep")();
             }
             std::string errMsg{"waitForInit failed due to timeout, information up to now: "};
             errMsg = errMsg + "frameIdMap=\"" + params.frameIdMap + "\", ";

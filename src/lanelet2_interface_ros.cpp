@@ -38,10 +38,10 @@
 using namespace lanelet2_interface_ros;
 
 std::string Lanelet2InterfaceRos::waitForFrameIdMap(double pollRateHz, double timeOutSecs) {
-    if (!params.frameIdMapFound) {
+    if (!params_.frameIdMapFound) {
         waitForParams(pollRateHz, timeOutSecs);
     }
-    return params.frameIdMap;
+    return params_.frameIdMap;
 }
 
 lanelet::LaneletMapConstPtr Lanelet2InterfaceRos::waitForMapPtr(double pollRateHz, double timeOutSecs) {
@@ -64,7 +64,12 @@ std::shared_ptr<lanelet::Projector> Lanelet2InterfaceRos::waitForProjectorPtr(do
     return utmProjectorPtr_;
 }
 
-void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) { // NOLINT(readability-function-size)
+void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) {
+    params_ = waitForParamsImpl(pollRateHz, timeOutSecs);
+}
+
+// NOLINTNEXTLINE(readability-function-size)
+Lanelet2InterfaceRos::InterfaceParams Lanelet2InterfaceRos::waitForParamsImpl(double pollRateHz, double timeOutSecs) {
     ros::NodeHandle nh;
     ros::Rate rate(pollRateHz);
 
@@ -74,6 +79,7 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
         increment = 0; // run infinitely long
     }
 
+    Lanelet2InterfaceRos::InterfaceParams params;
     for (size_t i = 0; i < counterMax; i += increment) {
         if (!ros::ok()) {
             throw InitializationError("!ros::ok()");
@@ -83,11 +89,10 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
         params.lonOriginFound = nh.getParam("/lanelet2_interface_ros/lon_origin", params.lonOrigin);
         params.mapFileNameFound = nh.getParam("/lanelet2_interface_ros/map_file_name", params.mapFileName);
         if (params.frameIdMapFound && params.latOriginFound && params.lonOriginFound && params.mapFileNameFound) {
-            return;
-        } else {
-            ROS_INFO_STREAM_DELAYED_THROTTLE(5., "lanelet2_interface_ros: Waiting... ");
-            rate.sleep();
+            return params;
         }
+        ROS_INFO_STREAM_DELAYED_THROTTLE(5., "lanelet2_interface_ros: Waiting... ");
+        rate.sleep();
     }
     std::string errMsg{"waitForInit failed due to timeout, information up to now: "};
     errMsg = errMsg + "frameIdMap=\"" + params.frameIdMap + "\", ";
@@ -99,6 +104,6 @@ void Lanelet2InterfaceRos::waitForParams(double pollRateHz, double timeOutSecs) 
 
 void Lanelet2InterfaceRos::loadMap() {
     utmProjectorPtr_ = std::make_shared<lanelet::projection::UtmProjector>(
-        lanelet::Origin({params.latOrigin, params.lonOrigin}), true);
-    nonConstMapPtr_ = lanelet::load(params.mapFileName, *utmProjectorPtr_);
+        lanelet::Origin({params_.latOrigin, params_.lonOrigin}), true);
+    nonConstMapPtr_ = lanelet::load(params_.mapFileName, *utmProjectorPtr_);
 }
