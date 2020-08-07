@@ -35,7 +35,7 @@ llmap = ll2if.waitForNonConstMapPtr(10, 30)  # pull with 10Hz for max. 30s
 
 ```
 
-and launch/include the launchfile [set_lanelet_map.launch](/launch/set_lanelet_map.launch) to receive a loaded map.
+and launch/include the launchfile [set_lanelet_map.launch](/launch/set_lanelet_map.launch) to receive a loaded map. You need to provide the path to the map file and an origin, as in [this test](/test/test_lanelet2_interface_ros.test#L3).
 
 ## License
 This package is distributed under the 3-Clause BSD License, see [LICENSE](LICENSE).
