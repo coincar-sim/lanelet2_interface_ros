@@ -2,8 +2,8 @@
 <launch>
 
   <arg name="map_file_name" />
-  <arg name="lat_origin" default="49.01452" />
-  <arg name="lon_origin" default="8.4171937" />
+  <arg name="lat_origin" />
+  <arg name="lon_origin" />
   <arg name="map_frame_with_offset" default="map" />
   <arg name="actual_utm_frame_no_offset" default="actual_utm_no_offset" />
 
