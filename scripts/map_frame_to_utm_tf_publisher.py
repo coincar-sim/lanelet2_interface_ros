@@ -39,6 +39,10 @@ import lanelet2
 
 stb = None
 static_transform = None
+lat_origin = None
+lon_origin = None
+map_frame_id = None
+actual_utm_with_no_offset_frame_id = None
 
 
 def timer_callback(event):
@@ -47,31 +51,29 @@ def timer_callback(event):
     stb.sendTransform(static_transform)
 
 
+def wait_for_params_successful():
+    global lat_origin, lon_origin, map_frame_id, actual_utm_with_no_offset_frame_id
+
+    for i in range(3000):
+        try:
+            lat_origin = float(rospy.get_param("/lanelet2_interface_ros/lat_origin"))
+            lon_origin = float(rospy.get_param("/lanelet2_interface_ros/lon_origin"))
+            map_frame_id = rospy.get_param("/lanelet2_interface_ros/map_frame_id")
+            actual_utm_with_no_offset_frame_id = rospy.get_param("/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id")
+        except Exception:
+            rospy.sleep(0.01)
+            continue
+
+        return True
+
+    return False
+
+
 if __name__ == '__main__':
 
     rospy.init_node('map_frame_to_utm_tf_publisher')
 
-    lat_origin = None
-    lon_origin = None
-    map_frame_id = None
-    actual_utm_with_no_offset_frame_id = None
-    init = False
-
-    for i in range(3000):
-        lat_origin = float(rospy.get_param("/lanelet2_interface_ros/lat_origin"))
-        lon_origin = float(rospy.get_param("/lanelet2_interface_ros/lon_origin"))
-
-        map_frame_id = rospy.get_param("/lanelet2_interface_ros/map_frame_id")
-        actual_utm_with_no_offset_frame_id = rospy.get_param(
-            "/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id")
-        if lat_origin is not None and lon_origin is not None \
-                and map_frame_id is not None and actual_utm_with_no_offset_frame_id is not None:
-            init = True
-            break
-
-        rospy.sleep(0.01)
-
-    if not init:
+    if not wait_for_params_successful():
         rospy.logerr("map_frame_to_utm_tf_publisher: Could not initialize")
         exit()
 
