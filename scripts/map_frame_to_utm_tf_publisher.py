@@ -59,7 +59,8 @@ def wait_for_params_successful():
             lat_origin = float(rospy.get_param("/lanelet2_interface_ros/lat_origin"))
             lon_origin = float(rospy.get_param("/lanelet2_interface_ros/lon_origin"))
             map_frame_id = rospy.get_param("/lanelet2_interface_ros/map_frame_id")
-            actual_utm_with_no_offset_frame_id = rospy.get_param("/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id")
+            actual_utm_with_no_offset_frame_id = rospy.get_param(
+                "/lanelet2_interface_ros/actual_utm_with_no_offset_frame_id")
         except Exception:
             rospy.sleep(0.01)
             continue
