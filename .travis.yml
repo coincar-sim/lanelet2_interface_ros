@@ -18,8 +18,8 @@ matrix:
       - UBUNTU_VERSION=bionic
       - ROS_DISTRO=melodic
     - env:
-      - UBUNTU_VERSION=noetic
-      - ROS_DISTRO=focal
+      - UBUNTU_VERSION=focal
+      - ROS_DISTRO=noetic
 
 env:
   global:
