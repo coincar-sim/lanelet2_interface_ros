@@ -1,6 +1,6 @@
 # This config file for Travis CI utilizes https://github.com/coincar-sim/mrt_cmake_modules_ci/ package.
 sudo: required
-dist: xenial
+dist: bionic
 services:
   - docker
 language: cpp
@@ -15,11 +15,11 @@ notifications:
 matrix:
   include:
     - env:
-      - UBUNTU_VERSION=xenial
-      - ROS_DISTRO=kinetic
-    - env:
       - UBUNTU_VERSION=bionic
       - ROS_DISTRO=melodic
+    - env:
+      - UBUNTU_VERSION=noetic
+      - ROS_DISTRO=focal
 
 env:
   global:
