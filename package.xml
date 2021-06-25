@@ -5,7 +5,7 @@
   <description>Interface between lanelet2 and ROS.</description>
 
   <license>BSD</license>
-  <maintainer email="maximilian.naumann@kit.edu">Maximilian Naumann</maintainer>
+  <maintainer email="danial.kamran@kit.edu">Danial Kamran</maintainer>
 
   <url type="repository">https://github.com/coincar-sim/lanelet2_interface_ros</url>
 
